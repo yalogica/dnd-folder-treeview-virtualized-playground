@@ -2,7 +2,7 @@ A React + TypeScript playground that implements a folder treeview (directory man
 
 ![Screenshot](./assets/screenshot.jpg)
 
-``
+``Bash
 pnpm install
 pnpm dev
 ``
