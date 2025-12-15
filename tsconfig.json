@@ -1,0 +1,33 @@
+{
+    "compilerOptions": {
+        "target": "ESNext",
+        "module": "ESNext",
+        "lib": ["dom"],
+        "types": ["node", "vite/client"],
+    
+        /* Bundler mode */
+        "jsx": "react-jsx", 
+        "moduleResolution": "node",
+        "resolveJsonModule": true,
+        "esModuleInterop": true,
+        "isolatedModules": true,
+        "removeComments": true,
+        "skipLibCheck": true,
+    
+        /* Linting */
+        "strict": true,
+        "baseUrl": ".",
+        "paths": {
+            "@/*": ["./src/*"]
+        },
+        
+        // probably we would never enable this one because it's too strict
+        "strictPropertyInitialization": true
+    },
+    "include": [
+        "src"
+    ],
+    "exclude": [
+        "node_modules"
+    ]
+}

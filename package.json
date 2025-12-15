@@ -1,0 +1,32 @@
+{
+    "name": "dnd-folder-treeview-virtualized-playground",
+    "author": "Max Lavrentev",
+    "private": true,
+    "version": "0.1.0",
+    "type": "module",
+    "scripts": {
+        "dev": "vite",
+        "build": "tsc && vite build",
+        "preview": "vite preview"
+    },
+    "devDependencies": {
+        "@tailwindcss/vite": "^4.1.18",
+        "@types/node": "^25.0.2",
+        "@types/react": "^19.2.7",
+        "@types/react-dom": "^19.2.3",
+        "@vitejs/plugin-react": "^5.1.2",
+        "rollup-plugin-license": "^3.6.0",
+        "tailwindcss": "^4.1.18",
+        "typescript": "^5.9.3",
+        "vite": "^7.3.0"
+    },
+    "dependencies": {
+        "@dnd-kit/core": "^6.3.1",
+        "clsx": "^2.1.1",
+        "lucide-react": "^0.561.0",
+        "react": "^19.2.3",
+        "react-dom": "^19.2.3",
+        "tailwind-merge": "^3.4.0",
+        "zustand": "^5.0.9"
+    }
+}
