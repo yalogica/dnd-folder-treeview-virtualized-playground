@@ -18,11 +18,21 @@ import {
   Active,
   Over
 } from "@dnd-kit/core"
-import { ITEM_HEIGHT, CONTAINER_HEIGHT, DirectoryNode } from "@/types"
+import { ITEM_HEIGHT, DirectoryNode } from "@/types"
 import { cn, createSearchRegex, filterTreeData, getFlatList, flattenTree, findNodeDeep } from "@/utils"
-import { DropIndicator, Badge } from "@/components"
 import { useTreeStore } from "@/use-tree-store"
 
+const DropIndicator = ({ className }: { className?: string }) => (
+  <div className={cn("absolute left-0 right-0 h-0.5 bg-blue-500 z-50 pointer-events-none", className)}>
+    <div className="absolute left-0 top-1/2 -translate-y-1/2 w-2 h-2 rounded-full bg-blue-500 border border-background shadow-sm" />
+  </div>
+);
+
+const Badge = ({ children, className }: { children: React.ReactNode, className?: string }) => (
+  <span className={cn("inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold transition-colors border-transparent bg-primary text-primary-foreground shadow", className)}>
+    {children}
+  </span>
+);
 
 interface TreeNodeProps {
   node: DirectoryNode;
@@ -276,6 +286,21 @@ export const DirectoryTree = () => {
   // --- Virtualization Logic ---
   const scrollContainerRef = useRef<HTMLDivElement>(null);
   const [scrollTop, setScrollTop] = useState(0);
+  const [containerHeight, setContainerHeight] = useState(0);
+
+  // Use ResizeObserver to effectively remove hardcoded CONTAINER_HEIGHT
+  useEffect(() => {
+    if (!scrollContainerRef.current) return;
+
+    const observer = new ResizeObserver((entries) => {
+        for (const entry of entries) {
+            setContainerHeight(entry.contentRect.height);
+        }
+    });
+
+    observer.observe(scrollContainerRef.current);
+    return () => observer.disconnect();
+  }, []);
 
   // Handle scroll event
   const handleScroll = (e: React.UIEvent<HTMLDivElement>) => {
@@ -288,9 +313,10 @@ export const DirectoryTree = () => {
 
   // Buffer items (prevent flickering)
   const overscan = 10;
+  const visibleNodeCount = containerHeight > 0 ? Math.ceil(containerHeight / ITEM_HEIGHT) : 0;
 
   const startIndex = Math.max(0, Math.floor(scrollTop / ITEM_HEIGHT) - overscan);
-  const endIndex = Math.min(totalCount, Math.ceil((scrollTop + CONTAINER_HEIGHT) / ITEM_HEIGHT) + overscan);
+  const endIndex = Math.min(totalCount, startIndex + visibleNodeCount + (overscan * 2));
 
   const virtualNodes = flattenedNodes.slice(startIndex, endIndex);
 
@@ -424,7 +450,7 @@ export const DirectoryTree = () => {
   };
 
   return (
-    <div className="w-full border border-border rounded-lg bg-card text-card-foreground shadow-sm overflow-hidden flex flex-col" style={{ height: CONTAINER_HEIGHT + 50 }}>
+    <div className="flex flex-col border rounded shadow-sm overflow-hidden">
       {/* Header with Search */}
       <div className="p-4 border-b border-border bg-muted/40 flex flex-col gap-3 shrink-0">
         <div className="flex items-center justify-between">
