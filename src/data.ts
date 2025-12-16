@@ -44,8 +44,8 @@ export const INITIAL_DATA: DirectoryNode[] = [
   { id: 'docs', name: 'docs', type: 'folder', children: [] },
   {
     id: 'load-test',
-    name: 'Load Test (1000 items)',
+    name: 'Load Test (10000 items)',
     type: 'folder',
-    children: createLargeDataset(1000, 'load-test')
+    children: createLargeDataset(10000, 'load-test')
   }
 ];
